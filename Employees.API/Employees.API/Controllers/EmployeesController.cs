@@ -1,5 +1,6 @@
 ﻿using Employees.API.Data;
 using Employees.API.Models;
+using Employees.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,27 +11,25 @@ namespace Employees.API.Controllers
     [Route("api/Employees")]
     public class EmployeesController : ControllerBase
     {
-        private readonly EmployeeDbContext _employeeDbContext;
+        private readonly EmployeeService _employeeService;
 
-        public EmployeesController(EmployeeDbContext employeeDbContext)
+        public EmployeesController(EmployeeService employeeService)
         {
-            this._employeeDbContext = employeeDbContext;
+            this._employeeService = employeeService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees()
+        public  async Task< IActionResult> GetAllEmployees()
         {
-           var employyees = await _employeeDbContext.Employees.ToListAsync();
+           var employees =await _employeeService.GetAllEmployees();
 
-            return Ok(employyees);
+            return Ok(employees);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] Employee employee)
         {
-            employee.Id = Guid.NewGuid();
-            await _employeeDbContext.Employees.AddAsync(employee);
-            await _employeeDbContext.SaveChangesAsync();
+           var employees = await _employeeService.AddEmployee(employee);
 
             return Ok(employee);
         }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/models/employee.model';
+import { EmployeesService } from 'src/app/services/employees.service';
 
 @Component({
   selector: 'app-employees-list',
@@ -8,58 +9,20 @@ import { Employee } from 'src/app/models/employee.model';
 })
 export class EmployeesListComponent implements OnInit {
   
-  employees: Employee[] = [
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-    {
-      id: '1',
-      name: 'qq',
-      email: 'qqq',
-      phone: 999999,
-      salary: 9999,
-      department: 'qqqq'
-    },
-  ]
+  employees: Employee[] = [];
+
+  constructor(private employeesService: EmployeesService) {
+    
+  }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.employeesService.getAllEmployees().subscribe({
+      next: (response) => {
+        this.employees = response;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
 }

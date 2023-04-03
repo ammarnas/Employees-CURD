@@ -1,4 +1,5 @@
 using Employees.API.Data;
+using Employees.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("EmploeeConnectionString")
 ));
+builder.Services.AddScoped<EmployeeService>();
 
 var app = builder.Build();
 
@@ -24,6 +26,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Enable CORS 
+
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthorization();
 
